@@ -37,6 +37,9 @@ public class PropertyPlaceholderTests {
 
     @Test
     public void defaultValue() {
+        // initialization
+        System.clearProperty("productionMode");
+        
         factory = new XmlApplicationContext(new FileSystemResource(new File(srcdir, "property-placeholder.xml")));
         conf = (Configuration) factory.getBean("simpleConfiguration");
 
