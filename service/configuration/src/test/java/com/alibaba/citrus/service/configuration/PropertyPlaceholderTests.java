@@ -46,13 +46,22 @@ public class PropertyPlaceholderTests {
 
     @Test
     public void systemPropertyValue() {
-        System.setProperty("productionMode", "true");
+        String initialValue = System.getProperty("productionMode");
+        try{
+            System.setProperty("productionMode", "true");    
 
-        factory = new XmlApplicationContext(new FileSystemResource(new File(srcdir, "property-placeholder.xml")));
-        conf = (Configuration) factory.getBean("simpleConfiguration");
+            factory = new XmlApplicationContext(new FileSystemResource(new File(srcdir, "property-placeholder.xml")));
+            conf = (Configuration) factory.getBean("simpleConfiguration");
 
-        // ${productionMode:false}
-        assertEquals(true, conf.isProductionMode());
+            // ${productionMode:false}
+            assertEquals(true, conf.isProductionMode());
+        } finally{
+            if(initialValue!=null){
+                System.setProperty("productionMode", "true");
+            }else{
+                System.clearProperty("productionMode");
+            }
+        }
     }
 
     @Test
